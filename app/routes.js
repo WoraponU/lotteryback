@@ -1,9 +1,9 @@
 const handlers = require('./handlers');
-const testRoute = require('./routes/testRoute');
+const usersRoute = require('./routes/usersRoute');
 
 
 module.exports = (app) => {
-  app.use('/api', testRoute);
+  app.use('/api', usersRoute);
 
   /**
   * Error handling

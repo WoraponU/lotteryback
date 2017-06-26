@@ -4,7 +4,7 @@ const validator = require('node-mongoose-validator');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
-const user = new Schema({
+const users = new Schema({
   id: Schema.ObjectId,
 
   username: { type: String, required: true },
@@ -38,6 +38,6 @@ const user = new Schema({
   versionKey: false,
 });
 
-const testModel = mongoose.model('testModel', user);
+const usersModel = mongoose.model('usersModel', users);
 
-module.exports = testModel;
+module.exports = usersModel;
