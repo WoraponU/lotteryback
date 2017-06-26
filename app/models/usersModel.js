@@ -1,12 +1,14 @@
 const testSchema = require('./schema/userSchema');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
   create: (data) => {
-    console.log(data);
-    // bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-    //   testSchema.create(data);
-    // });
+    console.log(data.password);
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(data.password, salt, function(err, hash) {
+          console.log(hash);
+      });
+    });
   },
   all: () => testSchema.find(),
 };
