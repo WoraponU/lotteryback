@@ -8,7 +8,7 @@ const users = new Schema({
   id: Schema.ObjectId,
 
   username: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String, select: false, required: true },
 
   name: { type: String, required: true },
   lastName: { type: String, required: true },
