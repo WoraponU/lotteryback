@@ -1,10 +1,11 @@
 const usersSchema = require('./schema/usersSchema');
+const config = require('../../config/config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
   genToken: user => (
-    jwt.sign({ sub: user.name }, 'secret', { expiresIn: '1h' })
+    jwt.sign({ sub: user.name }, config.secretKey, { expiresIn: '1h' })
   ),
 
   create: (data) => {
