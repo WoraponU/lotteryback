@@ -1,7 +1,12 @@
 const usersSchema = require('./schema/usersSchema');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
+  genToken: user => (
+    jwt.sign({ sub: user.name }, 'secret', { expiresIn: '1h' })
+  ),
+
   create: (data) => {
     const createUserDataes = data;
 
@@ -18,6 +23,16 @@ module.exports = {
       });
     });
   },
+
+  getUserByUsername: username => (
+    new Promise((resolve, reject) => {
+      usersSchema.findOne({ username }, (err, doc) => {
+        if (err) reject(err);
+
+        resolve(doc);
+      });
+    })
+  ),
 
   all: () => usersSchema.find(),
 };
