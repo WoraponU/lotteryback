@@ -1,14 +1,23 @@
-const testSchema = require('./schema/userSchema');
+const usersSchema = require('./schema/usersSchema');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
   create: (data) => {
-    console.log(data.password);
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(data.password, salt, function(err, hash) {
-          console.log(hash);
+    const createUserDataes = data;
+
+    return new Promise((resolve, reject) => {
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) reject(err);
+
+        bcrypt.hash(createUserDataes.password, salt, (errResp, hash) => {
+          if (errResp) reject(errResp);
+
+          createUserDataes.password = hash;
+          resolve(usersSchema.create(createUserDataes));
+        });
       });
     });
   },
-  all: () => testSchema.find(),
+
+  all: () => usersSchema.find(),
 };

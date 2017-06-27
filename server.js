@@ -14,8 +14,8 @@ require('./config/express')(app);
 require('./app/routes')(app);
 
 // Connect mongoose
-// const database = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
-mongoose.connect('mongodb://mongo:27017');
+const database = `${process.env.DB_HOST}://${process.env.DB_DATABASE}:${process.env.DB_PORT}`;
+mongoose.connect(database);
 
 app.listen(port, () => console.log(`app listening on port ${port}`));
 

@@ -1,7 +1,12 @@
 const usersModel = require('../models/usersModel');
 
 const usersController = {
-  create: (req, res) => (
+  register: (req, res) => (
+    usersModel.create(req.body)
+      .then(resp => res.json(resp))
+      .catch(err => res.status(422).json(err))
+  ),
+  login: (req, res) => (
     usersModel.create(req.body)
       .then(resp => res.json(resp))
       .catch(err => res.status(422).json(err))
