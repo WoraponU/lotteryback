@@ -5,28 +5,32 @@ const usersController = {
     usersModel.create(req.body)
       .then(resp =>
         res
-          .header('Authorization', `Bearer ${usersModel.genToken(resp)}`)
+          .header('Authorization', `Bearer ${usersModel.genAccessToken(resp)}`)
           .status(201)
           .json(resp))
       .catch(err => res.status(422).json(err))
   ),
   login: (req, res) => {
-    Promise.all([
-      usersModel.getUserByUsername(req.body.username),
-      usersModel.getUserByUsername(req.body.username),
-    ])
-      .then((data) => {
-        console.log(data);
-      });
-      // .then(data => {
-      //   console.log("Second handler", data);
-      // });
+    const { username, password } = req.body;
 
-      // .then(resp => console.log(resp))
-      // .catch(err => console.log(err));
-    // usersModel.create(req.body)
-    //   .then(resp => res.json(resp))
-    //   .catch(err => res.status(422).json(err))
+    usersModel.getUserByUsername(username)
+      .then((resp) => {
+        const { password: hashPassword } = resp;
+        usersModel.verifyPassword(password, hashPassword)
+          .then((isValid) => {
+            if (isValid) {
+              res
+              .header('Authorization', `Bearer ${usersModel.genAccessToken(resp)}`)
+              .status(201)
+              .json(resp);
+            }
+
+            res
+              .status(401)
+              .json('Invalid credential.');
+          });
+      })
+      .catch(err => res.status(404).json(err));
   },
   all: (req, res) => (
     usersModel.all()

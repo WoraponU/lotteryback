@@ -4,7 +4,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  genToken: user => (
+  verifyPassword: (password, hashPassword) => (
+    new Promise((resolve, reject) => {
+      bcrypt.compare(password, hashPassword, (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+    })
+  ),
+
+  genAccessToken: user => (
     jwt.sign({ sub: user.name }, config.secretKey, { expiresIn: '1h' })
   ),
 
