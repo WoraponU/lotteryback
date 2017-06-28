@@ -1,5 +1,6 @@
 const usersModel = require('../models/usersModel');
 const serialization = require('../libs/serialization');
+const userPolicies = require('../policies/userPolicies');
 
 module.exports = {
   create: (req, res) => (
@@ -33,9 +34,11 @@ module.exports = {
       .catch(() => res.status(404).json('User Not Found'));
   },
   all: (req, res) => {
-    console.log(req.user);
     usersModel.all()
       .then(resp => res.json(resp))
       .catch(err => res.status(422).json(err));
+  },
+  update: (req, res) => {
+    console.log(userPolicies.for('update', req.user));
   },
 };
