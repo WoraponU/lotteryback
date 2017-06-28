@@ -1,9 +1,11 @@
 const handlers = require('./handlers');
-const testRoute = require('./routes/testRoute');
+const usersRoute = require('./routes/usersRoute');
+const auth = require('./middlewares/auth');
 
 
 module.exports = (app) => {
-  app.use('/api', testRoute);
+  app.use(auth);
+  app.use('/api', usersRoute);
 
   /**
   * Error handling

@@ -1,2 +1,9 @@
+SECRET_KEY=harutheboss
+
 NODE_ENV=development
 NODE_PORT=3000
+
+DB_HOST=mongodb
+DB_DATABASE=mongo
+DB_PORT=27017
+
