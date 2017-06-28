@@ -2,10 +2,12 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const config = require('./config/config');
+
 
 const app = express();
 
-const port = process.env.NODE_PORT || 3000;
+const port = config.port;
 
 mongoose.Promise = require('bluebird');
 
@@ -14,10 +16,8 @@ require('./config/express')(app);
 require('./app/routes')(app);
 
 // Connect mongoose
-// const database = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
-mongoose.connect('mongodb://mongo:27017');
-
-
+const database = `${process.env.DB_HOST}://${process.env.DB_DATABASE}:${process.env.DB_PORT}`;
+mongoose.connect(database);
 
 app.listen(port, () => console.log(`app listening on port ${port}`));
 
