@@ -1,8 +1,10 @@
 const handlers = require('./handlers');
 const usersRoute = require('./routes/usersRoute');
+const auth = require('./middlewares/auth');
 
 
 module.exports = (app) => {
+  app.use(auth);
   app.use('/api', usersRoute);
 
   /**

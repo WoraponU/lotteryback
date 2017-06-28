@@ -14,7 +14,7 @@ module.exports = {
   ),
 
   genAccessToken: user => (
-    jwt.sign({ sub: user.name }, config.secretKey, { expiresIn: '1h' })
+    jwt.sign({ sub: user.username }, config.secretKey, { expiresIn: '1h' })
   ),
 
   create: (data) => {

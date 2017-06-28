@@ -1,13 +1,14 @@
 const usersModel = require('../models/usersModel');
+const serialization = require('../libs/serialization');
 
-const usersController = {
+module.exports = {
   create: (req, res) => (
     usersModel.create(req.body)
       .then(resp =>
         res
           .header('Authorization', `Bearer ${usersModel.genAccessToken(resp)}`)
           .status(201)
-          .json(resp))
+          .json(serialization.protected('password', resp)))
       .catch(err => res.status(422).json(err))
   ),
   login: (req, res) => {
@@ -16,27 +17,25 @@ const usersController = {
     usersModel.getUserByUsername(username)
       .then((resp) => {
         const { password: hashPassword } = resp;
+
         usersModel.verifyPassword(password, hashPassword)
           .then((isValid) => {
             if (isValid) {
               res
               .header('Authorization', `Bearer ${usersModel.genAccessToken(resp)}`)
               .status(201)
-              .json(resp);
+              .json(serialization.protected('password', resp));
             }
 
-            res
-              .status(401)
-              .json('Invalid credential.');
+            res.status(401).json('Invalid credential.');
           });
       })
-      .catch(err => res.status(404).json(err));
+      .catch(() => res.status(404).json('User Not Found'));
   },
-  all: (req, res) => (
+  all: (req, res) => {
+    console.log(req.user);
     usersModel.all()
       .then(resp => res.json(resp))
-      .catch(err => res.status(422).json(err))
-  ),
+      .catch(err => res.status(422).json(err));
+  },
 };
-
-module.exports = usersController;
