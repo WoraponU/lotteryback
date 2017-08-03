@@ -1,11 +1,12 @@
 const handlers = require('./handlers');
-const usersRoute = require('./routes/usersRoute');
+const mailsRoute = require('./routes/mailsRoute');
 const auth = require('./middlewares/auth');
 
 
 module.exports = (app) => {
   app.use(auth);
-  app.use('/api', usersRoute);
+  // app.use('/api', usersRoute);
+  app.use('/api/mail', mailsRoute);
 
   /**
   * Error handling
