@@ -1,23 +1,34 @@
 const nodemailer = require('nodemailer');
-// const smtpTransport = require('nodemailer-smtp-transport');
+const config = require('../../config/config');
 
 module.exports = {
   sendMail: (req, res) => {
+    const { name, email, phoneNumber, company, yourMind } = req.body;
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'worapon.p@hobbiz.co.th',
-        pass: 'Critical38',
+        user: config.mailHost,
+        pass: config.mailHostPassword,
       },
     });
 
-    console.log('created');
-    transporter.sendMail({
-      from: 'hobbiz@gmail.com',
-      to: 'woraponok@gmail.com',
-      subject: 'hello world!',
-      text: 'hello world!',
+    const mailOption = {
+      from: email,
+      to: config.mailHost,
+      subject: 'ASK US ANYTHING',
+      html: `
+        name: ${name},
+        email: ${email},
+        phone: ${phoneNumber},
+        company: ${company},
+        yourMind: ${yourMind}`,
+    };
+
+    transporter.sendMail(mailOption, (error, info) => {
+      if (error) {
+        res.status(400).json(error);
+      }
+      res.status(200).json(`Message ${info.messageId} sent: ${info.response}`);
     });
-    res.status(200).json('eiei');
   },
 };
