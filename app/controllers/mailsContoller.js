@@ -26,9 +26,9 @@ module.exports = {
 
     transporter.sendMail(mailOption, (error, info) => {
       if (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
       }
-      res.status(200).json(`Message ${info.messageId} sent: ${info.response}`);
+      return res.status(200).json(`Message ${info.messageId} sent: ${info.response}`);
     });
   },
 };
