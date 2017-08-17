@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../../config/config');
+const https = require('https');
 
 module.exports = {
   sendMail: (req, res) => {
@@ -31,4 +32,9 @@ module.exports = {
       return res.status(200).json(`Message ${info.messageId} sent: ${info.response}`);
     });
   },
+  test: (req, res) => (
+    https.get('https://pantip.com/topic/36774680', response => (
+      res.status(response.statusCode).json('finished')
+    ))
+  ),
 };
