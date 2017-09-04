@@ -32,9 +32,21 @@ module.exports = {
       return res.status(200).json(`Message ${info.messageId} sent: ${info.response}`);
     });
   },
-  test: (req, res) => (
-    https.get('https://pantip.com/topic/36774680', response => (
-      res.status(response.statusCode).json('finished')
-    ))
-  ),
+  test: (req, res) => {
+    const expectWord = 'คอนโดมือfdsfaสองธรรมดา ';
+    let isHasExpectWord = false;
+
+    return https.get('https://pantip.com/topic/36774680', (response) => {
+      response.on('data', (chunk) => {
+        isHasExpectWord = isHasExpectWord || chunk.includes(expectWord);
+      });
+      response.on('end', () => {
+        if (isHasExpectWord) {
+          return res.status(200).json('Access Success ');
+        }
+        return res.status(400).json('not Access');
+      });
+      req.on('error', () => (res.status(400).json('not Access')));
+    });
+  },
 };
