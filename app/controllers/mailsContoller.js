@@ -33,7 +33,7 @@ module.exports = {
     });
   },
   test: (req, res) => {
-    const expectWord = 'คอนโดมือfdsfaสองธรรมดา ';
+    const expectWord = 'คอนโดมือสองธรรมดา';
     let isHasExpectWord = false;
 
     return https.get('https://pantip.com/topic/36774680', (response) => {
