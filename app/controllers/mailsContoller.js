@@ -33,10 +33,13 @@ module.exports = {
     });
   },
   test: (req, res) => {
-    const expectWord = 'คอนโดมือสองธรรมดา';
+    const { url } = req.query;
+    const expectWord = 'ยินดี';
+    // const expectWord = 'ทอด';
     let isHasExpectWord = false;
 
-    return https.get('https://pantip.com/topic/36774680', (response) => {
+    return https.get(url, (response) => {
+    // return https.get('https://pantip.com/topic/36885719', (response) => {
       response.on('data', (chunk) => {
         isHasExpectWord = isHasExpectWord || chunk.includes(expectWord);
       });
@@ -46,7 +49,7 @@ module.exports = {
         }
         return res.status(400).json('not Access');
       });
-      req.on('error', () => (res.status(400).json('not Access')));
+      response.on('error', () => (res.status(400).json('not Access ja')));
     });
   },
 };
